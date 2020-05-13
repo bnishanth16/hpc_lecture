@@ -1,5 +1,5 @@
 # hpc_lecture
-Name: Nishanth Baskaran
+Name: Nishanth Baskaran,
 Student ID: 19M15017
 
 |          | Topic                                | Sample code               |
