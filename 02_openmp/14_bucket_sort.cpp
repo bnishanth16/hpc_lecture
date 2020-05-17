@@ -22,22 +22,17 @@ int main() {
     bucket[i] = 0;
   }
  
- #pragma omp parallel //new code
- #pragma omp sections firstprivate(bucket) //new code 
- {
-   #pragma omp section //new code
+  #pragma omp parallel for //new code 
   for (int i=0; i<n; i++) {
+    #pragma omp atomic update //new code
     bucket[key[i]]++;
   }
  
-  #pragma omp section //new code
   for (int i=0, j=0; i<range; i++) { 
     for (; bucket[i]>0; bucket[i]--) {
       key[j++] = i;
     }
   }
- }
-  
 
   #pragma omp parallel //new code
   for (int i=0; i<n; i++) {
