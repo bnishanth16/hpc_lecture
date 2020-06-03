@@ -1,3 +1,7 @@
+// Name: Nishanth Baskaran
+// Student ID: 19M15017
+// HPSC Assignment-L7
+
 #include <iostream>
 #include <typeinfo>
 #include <random>
@@ -13,16 +17,11 @@
 using namespace cutlass;
 
 int main(int argc, const char **argv) {
-  int m = 10240;
-  int k = 4096;
-  int n = 4096;
-  float alpha = 1.0;
-  float beta = 0.0;
+  int m = 10240, k = 4096, n = 4096, g_timing_iterations = 10;
+  float alpha = 1.0, beta = 0.0;
   static const matrix_transform_t::kind_t TransformA = matrix_transform_t::NonTranspose;
   static const matrix_transform_t::kind_t TransformB = matrix_transform_t::NonTranspose;
-  typedef float value_t;
-  typedef float accum_t;
-  int g_timing_iterations = 10;
+  typedef float value_t, accum_t;
   cudaStream_t stream = 0;
   matrix<value_t> A(m, k);
   matrix<value_t> B(k, n);
@@ -62,7 +61,7 @@ int main(int argc, const char **argv) {
   double tcublas = timer.elapsed_millis() / g_timing_iterations;
   double cublas_flops = double(num_flops) / tcublas / 1.0e6;
   typedef gemm::blas_scaled_epilogue<float, float, float> epilogue_op_t;
-  epilogue_op_t epilogue(alpha, beta);
+  // epilogue_op_t epilogue(alpha, beta);
   for (int i = 0; i < g_timing_iterations+2; i++) {
     if (i == 2) timer.start();
     gemm::dispatch<epilogue_op_t>(
