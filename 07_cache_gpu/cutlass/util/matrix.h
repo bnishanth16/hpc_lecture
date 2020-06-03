@@ -135,33 +135,7 @@ public:
     // Inspectors
     //-----------------------------------------------------------------------------
 
-    /**
-     * Return the height of the matrix, subject to the optional \p transpose_op
-     */
-    int height(matrix_transform_t transpose_op = matrix_transform_t::NonTranspose) const
-    {
-        switch (transpose_op)
-        {
-            case matrix_transform_t::NonTranspose :    return _m;
-            case matrix_transform_t::Transpose :       return _n;
-            default: return -1;
-        }
-    }
-
-
-    /**
-     * Return the width of the matrix, subject to the optional \p transpose_op
-     */
-    int width(matrix_transform_t transpose_op = matrix_transform_t::NonTranspose) const
-    {
-        switch (transpose_op)
-        {
-            case matrix_transform_t::NonTranspose :    return _n;
-            case matrix_transform_t::Transpose :       return _m;
-            default: return -1;
-        }
-    }
-
+  //function deleted
 
     /**
      * Return item at (x, y) coordinate of matrix, subject to the optional \p transform op
@@ -184,40 +158,7 @@ public:
      * Return the distance (in items) within memory between elements of two
      * consecutive columns which have the same row index, subject to the optional \p transform op
      */
-    int leading_dim(matrix_transform_t transpose_op = matrix_transform_t::NonTranspose) const
-    {
-        switch (transpose_op)
-        {
-            case matrix_transform_t::NonTranspose :    return _m;
-            case matrix_transform_t::Transpose :       return _n;
-            default: return 0;
-        }
-    }
-
-    /**
-     * Get host data pointer
-     */
-    value_t* h_data()
-    {
-        return _h_data.data();
-    }
-
-
-    /**
-     * Get host data pointer
-     */
-    value_t const* h_data() const
-    {
-        return _h_data.data();
-    }
-
-    /**
-     * Get device data pointer
-     */
-    value_t const* d_data() const
-    {
-        return _d_data;
-    }
+//function deleted
 
     /**
      * Get device data pointer
@@ -253,34 +194,7 @@ public:
 	 * Initialize matrix values such that all the elements of the principal diagonal
      * are ones and all other elements are zeros
      */
-    void fill_identity()
-    {
-        for (int j = 0; j < _n; j++)
-        {
-            for (int i = 0; i < _m; i++)
-            {
-                _h_data[i + j * _m] = host_value_t(i == j ? 1 : 0);
-            }
-        }
-    }
-
-
-	/**
-	 * Initialize matrix values using the random number \p generator.  The
-     * \p generator reference is assumed to be a nullary functor that returns
-     * values convertible to the matrix \p value_t.
-     */
-    template <typename T>
-    void fill_random(T & generator)
-    {
-        for (int j = 0; j < _n; j++)
-        {
-            for (int i = 0; i < _m; i++)
-            {
-                _h_data[i + j * _m] = (value_t) generator();
-            }
-        }
-    }
+//function deleted
 
   void random() {
     for (int j = 0; j < _n; j++) {
@@ -369,88 +283,7 @@ public:
     }
 
 
-    //-----------------------------------------------------------------------------
-    // Floating point "almost-equal" utilities
-    //-----------------------------------------------------------------------------
-
-    static bool almost_equal_ulps(half_t a, half_t b, int max_ulps)
-    {
-        if (a == b)
-            return true;
-
-        int32_t int_diff = abs(a.raw() - b.raw());
-        if (int_diff <= max_ulps)
-            return true;
-        return false;
-    }
-
-
-    static bool almost_equal_ulps(float a, float b, int max_ulps)
-    {
-        if (a == b)
-            return true;
-        int32_t int_diff = abs(*(int32_t*)&a - *(int32_t*)&b);
-        if (int_diff <= max_ulps)
-            return true;
-        return false;
-    }
-
-
-    static bool almost_equal_ulps(double a, double b, int max_ulps)
-    {
-        if (a == b)
-            return true;
-        int64_t int_diff = abs(*(int64_t*)&a - *(int64_t*)&b);
-        if (int_diff <= max_ulps)
-            return true;
-        return false;
-    }
-
-    static bool almost_equal_ulps(int32_t a, int32_t b, int max_ulps)
-    {
-        return (a == b);
-    }
-
-
-    //-----------------------------------------------------------------------------
-    // matrix operations
-    //-----------------------------------------------------------------------------
-
-
-    /**
-     * Returns matrix equality
-     */
-    bool operator==(const matrix<value_t> &mat) const
-    {
-        int max_ulps = 30;
-
-        if (_m != mat._m || _n != mat._n)
-        {
-            fprintf(stderr, "Error: dimension mismatch during matrix comparison.\n"); exit(1);
-        }
-
-        for (int j = 0; j < _n; j++)
-        {
-            for (int i = 0; i < _m; i++)
-            {
-                if (!almost_equal_ulps(_h_data[i + j * _m], mat._h_data[i + j * _m], max_ulps))
-                {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-
-    /**
-     * Returns matrix inequality
-     */
-    bool operator!=(const matrix<value_t> &mat) const
-    {
-        return !(*this == mat);
-    }
-
+// function deleted
 
     /**
      * Computes this = (alpha * op(A) * op(B)) + (beta * this), specialized for gemm_nn
