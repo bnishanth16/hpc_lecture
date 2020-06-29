@@ -45,13 +45,14 @@ int main()
     {
       pressure_poisson<<<blockNumber,threadsPerBlock>>>(p,pn,b,rho,dt,dx,dy,nx,ny);
       boundary_pressure<<<blockNumber,threadsPerBlock>>>(p,nx,ny);
-      copy_function(pn,p,nx,ny);
+      copy_function<<<blockNumber,threadsPerBlock>>>(pn,p,nx,ny);
       cudaDeviceSynchronize();
     }
     
     velocity_solver<<<blockNumber,threadsPerBlock>>>(u,un,v,vn,p,pn,b,rho,nu,dt,dx,dy,nx,ny);
     boundary_velocity<<<blockNumber,threadsPerBlock>>>(u,v,nx,ny);
-    copy_function(un,u,nx,ny);    copy_function(vn,v,nx,ny);
+    copy_function<<<blockNumber,threadsPerBlock>>>(un,u,nx,ny);    
+    copy_function<<<blockNumber,threadsPerBlock>>>(vn,v,nx,ny);
     cudaDeviceSynchronize();
   }
   auto t_final = chrono::steady_clock::now();

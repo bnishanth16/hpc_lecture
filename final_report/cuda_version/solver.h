@@ -35,15 +35,16 @@ __global__ void build_up_b(double *b, double *u, double *v, double rho, double d
     __syncthreads();
 }
 
-void copy_function(double *final, double *initial, int nx, int ny)
+__global__ void copy_function(double *final, double *initial, int nx, int ny)
 {
-    for (int i = 0; i < nx; i++)
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    int j = threadIdx.y + blockIdx.y * blockDim.y;
+
+    if (i>=0 && i<nx && j>=0 && j<ny)
     {
-        for (int j = 0; j < ny; j++)
-        {
-            final[j*nx+i] = initial[j*nx+i];
-        }
-    } 
+        final[j*nx+i] = initial[j*nx+i];
+    }
+    __syncthreads();
 }
 
 __global__ void pressure_poisson(double *p, double *pn, double *b, double rho, double dt, double dx, double dy, int nx, int ny)
