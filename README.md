@@ -1,6 +1,11 @@
 # hpc_lecture
-Name: Nishanth Baskaran,
+
+Name: Nishanth Baskaran
+
 Student ID: 19M15017
+
+
+Find the Final report of HPSC course [here](https://github.com/bnishanth16/hpc_lecture/tree/master/final_report).
 
 |          | Topic                                | Sample code               |
 | -------- | ------------------------------------ | ------------------------- |
